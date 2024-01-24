@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<Extern href="stdidcmd.h"/>
+	<Extern href="vsshlids.h"/>
+
+	<Commands package="guidCleanAndRebuildCommandPackage">
+		<Bitmaps>
+			<Bitmap guid="testIcon" href="Resources\Icon.bmp" usedList="testIcon1"/>
+		</Bitmaps>
+		<Buttons>
+			<Button guid="guidCleanAndRebuildCommandPackageCmdSet" id="CleanAndRebuildCommandId" priority="0xF000" type="Button">
+				<Parent guid="guidSHLMainMenu" id="IDG_VS_BUILD_SOLUTION"/>
+				<Icon guid="testIcon" id="testIcon1" />
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>CleanAndRebuild</CommandName>
+					<LocCanonicalName>CleanAndRebuild</LocCanonicalName>
+					<ButtonText>Clean and Rebuild Solution</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidCleanOnlyCommandPackageCmdSet" id="CleanOnlyCommandId" priority="0xF000" type="Button">
+				<Parent guid="guidSHLMainMenu" id="IDG_VS_BUILD_SOLUTION"/>
+				<Icon guid="testIcon" id="testIcon1" />
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>CleanOnly</CommandName>
+					<LocCanonicalName>CleanOnly</LocCanonicalName>
+					<ButtonText>Clean Bin/Obj</ButtonText>
+				</Strings>
+			</Button>
+		</Buttons>
+	</Commands>
+	<CommandPlacements>
+		<CommandPlacement guid="guidCleanAndRebuildCommandPackageCmdSet" id="CleanAndRebuildCommandId" priority="0x0400">
+			<Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidCleanAndRebuildCommandPackageCmdSet" id="CleanAndRebuildCommandId" priority="0x0400">
+			<Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SOLUTION_BUILD" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidCleanOnlyCommandPackageCmdSet" id="CleanOnlyCommandId" priority="0x0400">
+			<Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidCleanOnlyCommandPackageCmdSet" id="CleanOnlyCommandId" priority="0x0400">
+			<Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SOLUTION_BUILD" />
+		</CommandPlacement>
+	</CommandPlacements>
+	<VisibilityConstraints>
+		<VisibilityItem guid="guidCleanAndRebuildCommandPackageCmdSet" id="CleanAndRebuildCommandId" context="UICONTEXT_SolutionExists"/>
+		<VisibilityItem guid="guidCleanOnlyCommandPackageCmdSet" id="CleanOnlyCommandId" context="UICONTEXT_SolutionExists"/>
+	</VisibilityConstraints>
+	<Symbols>
+		<GuidSymbol name="guidCleanAndRebuildCommandPackage" value="{C17D4A3A-D9AF-4E05-B7D1-F170A6143FD0}"/>
+		<GuidSymbol name="testIcon" value="{D62BB199-6F11-4F36-BD58-838D2107B4D9}">
+			<IDSymbol name="testIcon1" value="1" />
+		</GuidSymbol>
+		<GuidSymbol name="guidCleanAndRebuildCommandPackageCmdSet" value="{58cab930-ec55-4b8b-876a-c6208cc246c4}">
+			<IDSymbol name="CleanAndRebuildCommandId" value="0x0100"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidCleanOnlyCommandPackageCmdSet" value="{58cab930-ec55-4b8b-876a-c6208cc246c5}">
+			<IDSymbol name="CleanOnlyCommandId" value="0x0101"/>
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>
