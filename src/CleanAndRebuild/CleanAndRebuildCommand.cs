@@ -253,25 +253,7 @@ namespace CPCleanAndRebuild
         private void CleanAndRebuild(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var sw = new Stopwatch();
-            var solutionProjects = GetProjects();
-            _vsOutputWindowPane.Clear();
-            WriteToOutput($"Starting... Projects to clean: {solutionProjects.Length}");
-            uint cookie = 0;
-            StatusBar.Progress(ref cookie, 1, string.Empty, 0, (uint)solutionProjects.Length);
-            sw.Start();
-            for (uint index = 0; index < solutionProjects.Length; index++)
-            {
-                var project = solutionProjects[index];
-                var projectRootPath = GetProjectRootFolder(project);
-                var message = $"Cleaning {project.UniqueName}";
-                WriteToOutput(message);
-                StatusBar.Progress(ref cookie, 1, string.Empty, index, (uint)solutionProjects.Length);
-                StatusBar.SetText(message);
-                CleanDirectory(projectRootPath);
-            }
-
-            var success = true;
+            CleanOnly(sender, e);
 
             // Rebuild the solution
             if (ServiceProvider.GetService(typeof(SVsSolutionBuildManager)) is IVsSolutionBuildManager2 buildManager)
@@ -281,32 +263,10 @@ namespace CPCleanAndRebuild
                 if (ErrorHandler.Failed(buildManager.StartSimpleUpdateSolutionConfiguration(
                     (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD),
                     (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_OUTOFDATE_QUERY_YES,
-                    0/*false*/)))
+                    0)))
                 {
                     // handle the error
-                    success = false;
                 }
-            }
-            else
-            {
-                success = false;
-            }
-
-            sw.Stop();
-            WriteToOutput($@"Finished. Elapsed: {sw.Elapsed:mm\:ss\.ffff}");
-
-            // Clear the progress bar.
-            StatusBar.Progress(ref cookie, 0, string.Empty, 0, 0);
-            StatusBar.FreezeOutput(0);
-            if (success)
-            {
-                StatusBar.SetText("Cleaned bin and obj folders and Rebuilt Solution");
-                WriteToOutput("Cleaned bin and obj folders and Rebuilt Solution");
-            }
-            else
-            {
-                StatusBar.SetText("Cleaned bin and obj folders. Unable to Rebuild the Solution.");
-                WriteToOutput("Cleaned bin and obj folders. Unable to Rebuild the Solution.");
             }
         }
 
